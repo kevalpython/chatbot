@@ -67,8 +67,6 @@ class URLInputView(GenericAPIView):
             if url not in all_urls:
                 all_urls.add(url)
 
-            print('Extracted URLs:', full_urls)
-            print('Total URLs:', len(full_urls))
             all_docs = []
 
             with ThreadPoolExecutor(max_workers=10) as executor:
@@ -77,7 +75,6 @@ class URLInputView(GenericAPIView):
                     result = future.result()
                     if result:
                         all_docs.extend(result)
-            print('Fetched Documents:', all_docs)
             
             text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
             splits = text_splitter.split_documents(all_docs)
@@ -111,5 +108,4 @@ class ChatView(GenericAPIView):
         message = serializer.validated_data['text']
         llm = LLM(user=request.user)
         response_data = llm.get_response(message)
-        print(response_data)
         return Response(response_data)

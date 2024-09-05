@@ -82,13 +82,10 @@ class LLM:
         )
 
         try:
-            print("11111111111111111111111", message, retrievers)
             raw_response = conversational_rag_chain.invoke(
                 {"input": message, "context": retrievers},
                 config=self.config
             )["answer"]
-            print("raw_response : ", raw_response)
-
             parser = StrOutputParser()
             answer = parser.parse(raw_response)
             print("answer : ", answer)
@@ -111,5 +108,4 @@ class LLM:
             print(f"An unexpected error occurred: {str(e)}")
             return f"An error occurred while processing your request: {str(e)}"
         
-        print("answer1111111111 : ", answer)
         return {"answer": answer, "timestamp": formatted_timestamp}
